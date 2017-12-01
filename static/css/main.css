@@ -1,0 +1,55 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #f9f9f9;
+}
+
+.main {
+    margin-top: 100px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-bottom: 3.5rem; /*padding equals to height of footer*/
+}
+
+.navbar {
+    padding: 0.5rem 2rem;
+    background-color: hsla(210,10%,23%,.9) !important;
+
+}
+
+.basic-margin {
+    margin-bottom: 1rem;
+}
+
+.icon-margin {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.description {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.none {
+    display: none;
+}
+
+.body_container {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%; /*for ie6 since it does not recognize min-height*/
+    position: relative;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 3.5rem; /*height of footer*/
+    text-align: center;
+    background-color: hsla(210,10%,23%,.9);
+    color: #f0f0f0;
+    padding-top:0.25rem;
+    font-size: 1.1rem;
+}

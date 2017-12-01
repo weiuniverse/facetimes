@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Face Detection</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入 Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.js"></script>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/scrollimg.css">
+    <script src="../static/js/main.js"></script>
+    <script src="../static/js/canvas.js"></script>
+    <script src="../static/js/scrollimg.js"></script>
+
+</head>
+<body onload="load()">
+<div class="body_container">
+    {# Navigate Bar #}
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background:hsla(210,10%,23%,0.95)">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#" style="color:whitesmoke">Face Web</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Link <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Item</a></li>
+                            <li><a href="#">Item</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Item</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Item</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {# Main Container #}
+    <div class="main">
+        <div class="description">
+            <h2>Face Detection</h2>
+            <p class="lead">Face detection is the base of face augment.<br/>
+                You can upload a image or use URL.
+            </p>
+        </div>
+        <div class="row">
+            <!-- Left column of image displaying -->
+            <div class="col-sm-6" id="image">
+                <canvas class="basic-margin" id="image_canvas" width="400" height="400"
+                        style="border:1px solid #000000;">
+                </canvas>
+
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="file" id="file" style="position:absolute;clip:rect(0 0 0 0);" name="file">
+
+                    <img class="none" src="/static/image/smile.png" id="default_img">
+
+                    <div class="row basic-margin">
+                        <div class="col-sm-6">
+                            <label class="btn btn-info btn-block" id="upload_btn" for="file">
+                                <span class="glyphicon glyphicon-cloud-upload icon-margin"></span>Upload
+                            </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-warning btn-block" id="random_btn">
+                                <span class="glyphicon glyphicon-random icon-margin"></span>Random Face
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- Default Image Bar -->
+                <div class="sscroll-bar">
+                    <button type="button" class="btn btn-default sbtn-left">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </button>
+
+                    <div class="sscroll-img-list">
+                        {% for default_img in default_img_list %}
+                            <img class="sscroll-img" id="default_img_{{ forloop.counter }}"
+                                 src="{{ default_img.path }}" alt="Default">
+                        {% endfor %}
+
+                    </div>
+                    <button type="button" class="btn btn-default sbtn-right">
+                        <span class="glyphicon glyphicon-arrow-right"></span>
+                    </button>
+                </div>
+                <!-- Default Image Bar END-->
+            </div>
+
+            <!-- Right column of image displaying -->
+            <div class="col-sm-6" id="result">
+
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseOne">
+                                    Response in JSON
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body" id="response_json">
+                                <p>Response in JSON</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseTwo">
+                                    Face Attributions
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                Example: (Reserved)<br/>
+                                Age: 19 <br/>
+                                Gender: Female<br/>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseThree">
+                                    Face Augment
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                Face Augment
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        This website is mainly designed for CSE527 and CSE547 final projects.<br/>
+        © 2017 Face Website Group, Zhengwei wei, Chenghong Li, Sangtian Wang. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

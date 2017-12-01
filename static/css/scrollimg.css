@@ -1,0 +1,42 @@
+.sscroll-bar {
+    height: 150px;
+}
+
+.sscroll-img {
+    float: left;
+    height: 150px;
+    width: 150px;
+    border: solid 1px gray;
+    margin-right: 5px;
+}
+
+.sscroll-img-inactive {
+    display: none;
+    float: left;
+    height: 150px;
+    border: solid 1px gray;
+    margin-right: 5px;
+}
+
+.sscroll-img-list {
+    border: solid 1px gray;
+    display: inline-block;
+    height: 150px;
+    margin-right: 5px;
+    overflow: hidden;
+}
+
+.sbtn-left {
+    border: solid 1px gray;
+    float: left;
+    height: 150px;
+    margin-right: 5px;
+    padding: 5px;
+}
+
+.sbtn-right {
+    float: right;
+    border: solid 1px gray;
+    height: 150px;
+    padding: 5px;
+}
