@@ -3,6 +3,8 @@ import json
 import os
 import uuid
 import numpy as np
+from . import face_detection_v3 as fd
+from . import utils
 
 from django.conf import settings
 from PIL import ImageFile
@@ -17,6 +19,7 @@ default_img_list.append({'path': '/static/image/IMG_0386.PNG'})
 default_img_list.append({'path': '/static/image/input1.jpg'})
 default_img_list.append({'path': '/static/image/smile.png'})
 default_img_list.append({'path': '/static/image/青い記憶.jpg'})
+default_img_list.append({'path': '/static/image/face1.jpg'})
 
 def display_view(request):
     context = {}
@@ -101,9 +104,16 @@ def upload_default(request):
         result_list['rs'] = 'Success'
         result_list['info'] = src
         # TODO: Face Detection
+        # filepath = os.path.join(os.path.join(settings.BASE_DIR, 'static/image'),result_list['info'])
+        filepath = 'E:\\facetimes'+result_list['info']
+        print('filepath='+filepath)
+        img = fd.read_img(filepath)
+        facetimes = fd.face()
+        rects,faces = facetimes.face_detection(img)
 
         # Detection Result
-        faces_list = np.array([[0,0,50,50],[20,20,40,50]], dtype=np.float)
+        faces_list = rects
+        # faces_list = np.array([[0,0,50,50],[20,20,40,50]], dtype=np.float)
         result_list['faces_list'] = []
         for face in faces_list:
             result_list['faces_list'].append({'pt_x':face[0], 'pt_y':face[1], 'width':face[2], 'height':face[3]})
@@ -112,5 +122,3 @@ def upload_default(request):
         result_list = {'rs': 'Failed', 'info':'Not a valid default image'};
     response.write(json.dumps(result_list, ensure_ascii=False))
     return response
-
-
