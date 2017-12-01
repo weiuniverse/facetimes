@@ -46,9 +46,14 @@ def upload(request):
     result_list['info'] = info
     if rs == 1:
         # TODO: Face Dectection
+        filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/'+result_list['info']
+        print('filepath='+filepath)
+        img = fd.read_img(filepath)
+        facetimes = fd.face()
+        rects,faces = facetimes.face_detection(img)
 
         # Detection Result
-        faces_list = np.array([[0,0,10,10],[20,20,20,25]], dtype=np.float)
+        faces_list = rects
         result_list['faces_list'] = []
         for face in faces_list:
             result_list['faces_list'].append({'pt_x':face[0], 'pt_y':face[1], 'width':face[2], 'height':face[3]})
@@ -105,7 +110,7 @@ def upload_default(request):
         result_list['info'] = src
         # TODO: Face Detection
         # filepath = os.path.join(os.path.join(settings.BASE_DIR, 'static/image'),result_list['info'])
-        filepath = 'E:\\facetimes'+result_list['info']
+        filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+result_list['info']
         print('filepath='+filepath)
         img = fd.read_img(filepath)
         facetimes = fd.face()

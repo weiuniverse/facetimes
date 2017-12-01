@@ -35,9 +35,10 @@ function upload() {
             img.src = response_obj["info"];
             img.onload = function () {
                 default_canvas(img);
-                for (var i = 0; i < response_obj["faces_list"].length; i++)
+                for (var i = 0; i < response_obj["faces_list"].length; i++) {
                     face_obj = response_obj["faces_list"][i]
-                draw_face(face_obj['pt_x'], face_obj['pt_y'], face_obj['width'], face_obj['height']);
+                    draw_face(face_obj['pt_x'], face_obj['pt_y'], face_obj['width'], face_obj['height']);
+                }
             };
 
         } else {
