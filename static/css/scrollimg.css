@@ -3,19 +3,31 @@
 }
 
 .sscroll-img {
+    max-height: 150px;
+    max-width: 150px;
+    display: block;
+    margin: auto;
+}
+
+
+.sscroll-imgpad {
     float: left;
     height: 150px;
     width: 150px;
     border: solid 1px gray;
     margin-right: 5px;
+    background-color: hsla(0,0%,60%,0.8);
+    display:inline-block;
 }
 
-.sscroll-img-inactive {
-    display: none;
+.sscroll-imgpad-inactive {
     float: left;
     height: 150px;
+    width: 150px;
     border: solid 1px gray;
     margin-right: 5px;
+    background-color: #696969;
+    display:none;
 }
 
 .sscroll-img-list {

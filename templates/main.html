@@ -73,7 +73,7 @@
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="file" id="file" style="position:absolute;clip:rect(0 0 0 0);" name="file">
 
-                    <img class="none" src="/static/image/smile.png" id="default_img">
+                    <img class="none" src="/static/image/face1.jpg" id="default_img">
 
                     <div class="row basic-margin">
                         <div class="col-sm-6">
@@ -89,15 +89,16 @@
                     </div>
                 </form>
                 <!-- Default Image Bar -->
-                <div class="sscroll-bar">
+                <div class="sscroll-bar" style="padding:0px 15px">
                     <button type="button" class="btn btn-default sbtn-left">
                         <span class="glyphicon glyphicon-arrow-left"></span>
                     </button>
 
                     <div class="sscroll-img-list">
                         {% for default_img in default_img_list %}
-                            <img class="sscroll-img" id="default_img_{{ forloop.counter }}"
-                                 src="{{ default_img.path }}" alt="Default">
+                            <div class="sscroll-imgpad" id="default_imgpad_{{ forloop.counter }}">
+                                <img class="sscroll-img" id="default_img_{{ forloop.counter }}"
+                                     src="{{ default_img.path }}" alt="Default"></div>
                         {% endfor %}
 
                     </div>
@@ -138,9 +139,21 @@
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse">
                             <div class="panel-body">
-                                Example: (Reserved)<br/>
-                                Age: 19 <br/>
-                                Gender: Female<br/>
+                                <!-- Face Image Bar -->
+                                <div class="sscroll-bar">
+                                    <button type="button" class="btn btn-default sbtn-left">
+                                        <span class="glyphicon glyphicon-arrow-left"></span>
+                                    </button>
+
+                                    <div class="sscroll-img-list" id="face_image_list1">
+
+
+                                    </div>
+                                    <button type="button" class="btn btn-default sbtn-right">
+                                        <span class="glyphicon glyphicon-arrow-right"></span>
+                                    </button>
+                                </div>
+                                <!-- Face Image Bar END-->
 
                             </div>
                         </div>
@@ -156,7 +169,32 @@
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse">
                             <div class="panel-body">
-                                Face Augment
+                                <!-- Face Image Bar2 -->
+                                <div class="sscroll-bar">
+                                    <button type="button" class="btn btn-default sbtn-left">
+                                        <span class="glyphicon glyphicon-arrow-left"></span>
+                                    </button>
+
+                                    <div class="sscroll-img-list" id="face_image_list2">
+
+
+                                    </div>
+                                    <button type="button" class="btn btn-default sbtn-right">
+                                        <span class="glyphicon glyphicon-arrow-right"></span>
+                                    </button>
+                                </div>
+                                <!-- Face Image Bar2 END-->
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-3 col-md-2">
+                                        {% for aug_btn in aug_btn_list %}
+                                            <button type="button" class="btn btn-primary btn-block aug_btn">{{ aug_btn.name }}</button>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-xs-8 col-sm-9 col-md-10">
+                                        <img src="" alt="Augment_result" id="aug_result">
+                                        <button type="button" class="btn btn-primary btn-block">Download</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

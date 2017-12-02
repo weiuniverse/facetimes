@@ -1,9 +1,9 @@
 var c, ctx;
-var draw_width, draw_height, ratio=1;
+var draw_width, draw_height, ratio = 1;
 
 function canvas_load() {
-    c=document.getElementById("image_canvas");
-    ctx=c.getContext("2d");
+    c = document.getElementById("image_canvas");
+    ctx = c.getContext("2d");
     draw_width = c.getAttribute("width");
     draw_height = c.getAttribute("height");
     default_canvas();
@@ -12,7 +12,7 @@ function canvas_load() {
 function default_canvas(img) {
     c.height = c.height;
     if (img === undefined)
-        img=document.getElementById("default_img");
+        img = document.getElementById("default_img");
     var width = c.getAttribute("width");
     var height = c.getAttribute("height");
 
@@ -27,8 +27,8 @@ function draw_image(e, img) {
 
     var width = c.getAttribute("width");
     var height = c.getAttribute("height");
-    console.log(img.width+","+img.height);
-    console.log(img);
+    console.log(img.width + "," + img.height);
+
     if (img.width >= img.height) {
         draw_width = width;
         ratio = width / img.width;
@@ -44,5 +44,13 @@ function draw_image(e, img) {
 function draw_face(x, y, w, h) {
     // Note: x, y, w, h are real position of image
     ctx.strokeStyle = "green";
-    ctx.strokeRect(x*ratio, y*ratio, w*ratio, h*ratio)
+    ctx.strokeRect(x * ratio, y * ratio, w * ratio, h * ratio)
+}
+
+function draw_landmark(px, py) {
+    ctx.beginPath();
+    ctx.arc(px*ratio, py*ratio, 2, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0,255,0,0.9)';
+    ctx.fill();
 }
