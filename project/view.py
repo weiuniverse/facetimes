@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 import json
 
 import os
@@ -79,8 +81,8 @@ def _upload(file):
             return 2, 'Not an image.'
 
         try:
-            # if img.mode != "RGB":
-            #     img = img.convert("RGB")
+            if img.mode != "RGB":
+                img = img.convert("RGB")
             img.save(path_file, 'jpeg', quality=100)
         except Exception as e:
             print(str(e))
