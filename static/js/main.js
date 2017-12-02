@@ -33,7 +33,7 @@ function upload() {
 
     $.ajax(settings).done(function (response) {
         $("#response_json p").text(response);
-        //console.log("response=" + response);
+        console.log(response);
         response_obj = JSON.parse(response);
         if (response_obj["rs"] === "Success") {
             var img = new Image();

@@ -20,6 +20,7 @@ function default_canvas(img) {
 }
 
 function draw_image(e, img) {
+    c.height = c.height;
     if (img === undefined) {
         id = $(this).attr("id");
         img = document.getElementById(id);
@@ -27,6 +28,10 @@ function draw_image(e, img) {
 
     var width = c.getAttribute("width");
     var height = c.getAttribute("height");
+    if (img.width*2 < width)
+      width = img.width*2;
+    if (img.height*2 < height)
+      height = img.height*2;
     console.log(img.width + "," + img.height);
 
     if (img.width >= img.height) {
