@@ -57,6 +57,8 @@ function upload() {
 
         } else {
             alert(response_obj["info"]);
+            $("#response_json p").text(response);
+
         }
     });
 }

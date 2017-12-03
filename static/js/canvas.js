@@ -23,7 +23,6 @@ function default_canvas(img) {
 
 function draw_image(e, img) {
     c.height = c.height;
-
     if (img === undefined) {
         id = $(this).attr("id");
         img = document.getElementById(id);
