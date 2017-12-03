@@ -13,9 +13,10 @@ html, body {
 }
 
 .navbar {
-    padding: 0.5rem 2rem;
-    background-color: hsla(210,10%,23%,.9) !important;
-
+    background-color: hsla(210, 10%, 23%, .9) !important;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    padding: 0 2rem;
 }
 
 .basic-margin {
@@ -26,6 +27,7 @@ html, body {
     margin-right: 5px;
     margin-left: 5px;
 }
+
 .description {
     text-align: center;
     margin-bottom: 2rem;
@@ -48,8 +50,27 @@ html, body {
     width: 100%;
     height: 3.5rem; /*height of footer*/
     text-align: center;
-    background-color: hsla(210,10%,23%,.9);
+    background-color: hsla(210, 10%, 23%, .9);
     color: #f0f0f0;
-    padding-top:0.25rem;
+    padding-top: 0.25rem;
     font-size: 1.1rem;
+}
+
+.aug_resultpad {
+    width: 100%;
+    margin-bottom: 1rem;
+    border: solid 1px gray;
+    border-radius: 2px;
+}
+
+.aug_result {
+    margin: 0 auto;
+    display: block;
+    max-height: 300px;
+    max-width: 100%;
+
+}
+
+.left-border {
+    border-left: solid 1px gray;
 }
