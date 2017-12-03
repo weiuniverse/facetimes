@@ -171,7 +171,7 @@ def landmark(request):
     landmark_list = f1.face_landmark(img_cv).tolist()
     # landmark_list=[[10,10], [20,20],[30,30],[30,40],[20,50],[10,60]]
 
-    response.write(json.dumps(landmark_list, ensure_ascii=False))
+    response.write(json.dumps({'landmark':landmark_list, 'age':20, 'gender':"Female"}, ensure_ascii=False))
     print("---- Landmarking ENDs ----")
     return response
 

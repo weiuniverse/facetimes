@@ -133,9 +133,12 @@ function get_landmark() {
                 response_obj = JSON.parse(XMLHttpRequest.responseText);
 
                 offset = draw_image(undefined, img);
-                for (var i = 0; i < response_obj.length; i++) {
-                    draw_landmark(response_obj[i][0], response_obj[i][1], offset);
+                for (var i = 0; i < response_obj["landmark"].length; i++) {
+                    draw_landmark(response_obj["landmark"][i][0], response_obj["landmark"][i][1], offset);
                 }
+                $("#age").text(response_obj["age"]);
+                $("#gender").text(response_obj["gender"]);
+
 
             } else {
                 if (XMLHttpRequest.status > 0)
