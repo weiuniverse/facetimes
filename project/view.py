@@ -232,8 +232,8 @@ def download(request):
     img = base642binary(src[22:])
 
     the_file_name = str(uuid.uuid1())+".jpg"
-    response = StreamingHttpResponse(img)
-    response['Content-Type'] = 'application/octet-stream'
+    response = HttpResponse(img)
+    response['Content-Type'] = 'image/*'# 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
     print("---- Downloading ENDs ----")
     return response
