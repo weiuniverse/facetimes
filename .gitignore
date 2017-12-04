@@ -105,3 +105,6 @@ static/upload/*.jpg
 
 .idea/
 tmp/*.jpg
+
+*.dat
+*.hdf5
