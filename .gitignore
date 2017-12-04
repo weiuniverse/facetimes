@@ -101,6 +101,7 @@ ENV/
 .mypy_cache/
 
 # temporary uploaded images
-static/upload/*
+static/upload/*.jpg
 
 .idea/
+tmp/*.jpg
