@@ -1,6 +1,7 @@
 .sscroll-bar {
     height: 150px;
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .sscroll-img {
@@ -14,7 +15,7 @@
 .sscroll-imgpad-active {
     opacity: 1.0; !important;
     filter: alpha(opacity=100); !important;/* IE8 and earlier */
-    border: solid 1px #eb9316;
+    border: solid 3px #eb9316;
 
 }
 
@@ -22,6 +23,7 @@
     display: inline-block;
     opacity: .6;
     filter: alpha(opacity=60); /* IE8 and earlier */
+    border: solid 3px #696969;
 }
 
 .sscroll-imgpad-halfactive:hover {
@@ -34,7 +36,7 @@
     float: left;
     height: 150px;
     width: 150px;
-    border: solid 1px gray;
+    /*border: solid 1px gray;*/
     margin-right: 5px;
     background-color: hsla(0, 0%, 60%, 0.8);
 

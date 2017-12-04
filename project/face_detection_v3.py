@@ -1,12 +1,15 @@
+# -*- coding:utf-8 -*-
+
 import numpy as np
 import cv2
-# import tensorflow as tf
 from imutils import face_utils
-# import argparse
 import imutils
 import dlib
-# from FaceSwapper.faceswapper import Faceswapper
+import uuid
 from . import utils
+from project.wide_resnet import WideResNet
+import face_recognition
+import os
 
 FACE_SCALE = 1.2
 class face:
@@ -196,15 +199,67 @@ class face:
         syn_face = self.face_swap_background(face,std_img)
         return syn_face
 
+    def face_age_gender(self,face):
+        # w,h,c = faces[0].shape
+        # print(w)
+        # img_size = w
+        face = cv2.resize(face,(64,64))
+        face = np.reshape(face,(1,64,64,3))
+        results = model.predict(face)
+        predicted_genders = results[0]
+        ages = np.arange(0, 101).reshape(101, 1)
+        predicted_genders = results[0]
+        gender = "No Result"
+        if predicted_genders[0][0]<0.5:
+            gender = 'Male'
+        else:
+            gender = "Female"
+        predicted_ages = results[1].dot(ages).flatten()
+        predicted_ages = int(predicted_ages)
+        print(gender)
+        print(predicted_ages)
+        return predicted_ages,gender
+
+    def face_recog(self,face_path):
+        #  将jpg文件加载到numpy数组中
+        unknown_image = face_recognition.load_image_file(face_path)
+        unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
+
+        name_list = os.listdir("./known_people/")
+        # print(name_list)
+        image_list= []
+        enconding_list=[]
+        for name in name_list:
+            image = (face_recognition.load_image_file("./known_people/"+name))
+            image_list.append(image)
+            face_encoding = face_recognition.face_encodings(image)[0]
+            enconding_list.append(face_encoding)
+        known_faces = enconding_list
+
+        # 获取每个图像文件中每个面部的面部编码
+        # 由于每个图像中可能有多个面，所以返回一个编码列表。
+        # 但是由于我知道每个图像只有一个脸，我只关心每个图像中的第一个编码，所以我取索引0。
+        # 结果是True/false的数组，未知面孔known_faces阵列中的任何人相匹配的结果
+
+        results = face_recognition.compare_faces(known_faces, unknown_face_encoding)
+        name = "Unknown"
+        for i in range(len(name_list)):
+            if results[i]:
+                name = name_list[i][:-4]
+        # if results[0]:
+            # name = "baby"
+        # elif results[1]:
+            # name = "chenglong"
+        # else:
+            # name = "Unknown"
+        return name
+
 def read_img(filepath):
     image = cv2.imread(filepath)
     return image
-'''
 
-img = cv2.imread('./images/face1.jpg')
-f1 = face()
-rects,faces = f1.face_detection(img)
-face = faces[0]
+
+'''
 std_img = cv2.imread('./images/ff1.jpg')
 # f1.face_landmark(std_img)
 # f1.face_alignment(face,std_img)
@@ -214,4 +269,31 @@ out = cv2.imread('out.jpg')
 cv2.imshow("out",out)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+'''
+img_size = 64
+depth = 16
+k = 8
+weight_file = "weights.18-4.06.hdf5"
+model = WideResNet(img_size, depth=depth, k=k)()
+model.load_weights(weight_file)
+
+
+img = cv2.imread('./static/image/facess.jpg')
+f2 = face()
+rects,faces = f2.face_detection(img)
+face1 = faces[0]
+face2 = face1.copy()
+
+face1 = cv2.resize(face1,(64,64))
+face1 = np.reshape(face1,(1,64,64,3))
+resultss = model.predict(face1)
+# cv2.imshow("face1")
+
+# face2 = face2.astype(np.uint8)
+'''
+pathfile = "./tmp/"+str(uuid.uuid1())+".jpg"
+cv2.imwrite(pathfile,face2)
+result_name = f2.face_recog(pathfile)
+print(result_name)
+# print(resultss)
 '''

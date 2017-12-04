@@ -21,7 +21,7 @@ function load() {
         id = "#" + $('#collapseThree>div>.sscroll-bar').attr("id");
         init_bar(id);
     });
-    focus = [0, 0, 0];
+    focus = [-1, -1, -1];
     canvas_load();
     scroll_load();
 }
@@ -115,6 +115,10 @@ function get_landmark() {
     var img = new Image();
     img.src = src;
 
+    $("#age").text("Processing...");
+    $("#gender").text("Processing...");
+    $("#pname").text("Processing...");
+
     console.log("#" + $("#" + idd)[0].parentNode.parentNode.id);
     idx = getidxbyid("#" + $("#" + idd)[0].parentNode.parentNode.id);
     changefocus(idx, $(this).index());
@@ -138,6 +142,7 @@ function get_landmark() {
                 }
                 $("#age").text(response_obj["age"]);
                 $("#gender").text(response_obj["gender"]);
+                $("#pname").text(response_obj["name"]);
 
 
             } else {
@@ -235,13 +240,16 @@ function upload_callback(img, response_text) {
         height2 = $("#face_image_list2").height();
         width2 = $("#face_image_list2").width();
 
+        init_bar(id_list[1]);
+        init_bar(id_list[2]);
+
         for (var i = 1; i <= response_obj["faces_list"].length; i++) {
             face_obj = response_obj["faces_list"][i - 1];
             console.log(face_obj);
             draw_face(face_obj['pt_x'], face_obj['pt_y'], face_obj['width'], face_obj['height'], offset);
             // Set properties of #face_image_list1
             $("#face_image_list1").append(
-                '<div class="sscroll-imgpad" id="face_imgpad_' + i + '">' +
+                '<div class="sscroll-imgpad sscroll-imgpad-halfactive" id="face_imgpad_' + i + '">' +
                 '<img class="sscroll-img" id="face_image_' + i +
                 '" src="' + face_obj['base64'] + '" alt="Faces"></div>');
             $("#face_image_" + i).css("max-height", $("#face_image_list1").height() + "px");
@@ -259,7 +267,7 @@ function upload_callback(img, response_text) {
 
             // Set properties of #face_image_list2
             $("#face_image_list2").append(
-                '<div class="sscroll-imgpad" id="face_imgpad2_' + i + '">' +
+                '<div class="sscroll-imgpad sscroll-imgpad-halfactive" id="face_imgpad2_' + i + '">' +
                 '<img class="sscroll-img" id="face_image2_' + i +
                 '" src="' + face_obj['base64'] + '" alt="Faces"></div>');
             $("#face_image2_" + i).css("max-height", height2 + "px");
@@ -281,6 +289,9 @@ function upload_callback(img, response_text) {
             });
 
         }
+        display(id_list[1]);
+        display(id_list[2]);
+
     }
 }
 

@@ -14,15 +14,18 @@ from PIL import ImageFile
 from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+import cv2
 
 default_img_list = []
 default_img_list.append({'path': u'/static/image/face1.jpg'})
 default_img_list.append({'path': u'/static/image/chuanpu.jpg'})
 default_img_list.append({'path': u'/static/image/ff.jpeg'})
-default_img_list.append({'path': u'/static/image/jojo.jpeg'})
-default_img_list.append({'path': u'/static/image/waifu2.jpg'})
-default_img_list.append({'path': u'/static/image/aoi_kioku.jpg'})
-default_img_list.append({'path': u'/static/image/suzukaze_aoiba.jpeg'})
+default_img_list.append({'path': u'/static/image/facess.jpg'})
+default_img_list.append({'path': u'/static/image/Solvay.jpg'})
+default_img_list.append({'path': u'/static/image/ff1.jpg'})
+default_img_list.append({'path': u'/static/image/qsmy.jpg'})
+default_img_list.append({'path': u'/static/image/obama.jpg'})
+default_img_list.append({'path': u'/static/image/test.jpg'})
 
 augment_btn_list = []
 # func is defined as tools.binary2mat
@@ -170,8 +173,12 @@ def landmark(request):
     f1=fd.face()
     landmark_list = f1.face_landmark(img_cv).tolist()
     # landmark_list=[[10,10], [20,20],[30,30],[30,40],[20,50],[10,60]]
-
-    response.write(json.dumps({'landmark':landmark_list, 'age':20, 'gender':"Female"}, ensure_ascii=False))
+    age,gender = f1.face_age_gender(img_cv)
+    pathfile = "./tmp/"+str(uuid.uuid1())+".jpg"
+    cv2.imwrite(pathfile,img_cv)
+    pname = f1.face_recog(pathfile)
+    os.remove(pathfile)
+    response.write(json.dumps({'landmark':landmark_list, 'age':age, 'gender':gender, 'name':pname}, ensure_ascii=False))
     print("---- Landmarking ENDs ----")
     return response
 

@@ -29,19 +29,20 @@ function setup() {
 
 function init_bar(id) {
     console.log($(id).width() + " " + $(id + " .sbtn-left").outerWidth(true) + " " +
-        $(id + " .sbtn-right").outerWidth());
+        $(id + " .sbtn-right").outerWidth(true));
     $(id + " .sscroll-img-list").css("width",
         ($(id).width() - $(id + " .sbtn-left").outerWidth(true) -
-            $(id + " .sbtn-right").outerWidth() - 7 ) + "px");
+            $(id + " .sbtn-right").outerWidth(true) - 7 ) + "px");
     var height = ($(id).width() - $(id + " .sbtn-left").outerWidth(true) -
-        $(id + " .sbtn-right").outerWidth() - 7 ) / active_count - 7;
-    $(id + " .sscroll-img-list").css("height", height + "px");
-    $(id + " .sbtn-left").css("height", height + "px");
-    $(id + " .sbtn-right").css("height", height + "px");
-    $(id + " .sscroll-img-list div").css("height", height + "px");
-    $(id + " .sscroll-img-list div img").css("max-height", (height - 2) + "px");
-    $(id + " .sscroll-img-list div").css("width", height + "px");
-    $(id + " .sscroll-img-list div img").css("max-width", (height - 2) + "px");
+        $(id + " .sbtn-right").outerWidth(true) - 7 ) / active_count - 6;
+    $(id).css("height", (height+4) + "px");
+    $(id + " .sscroll-img-list").css("height", (height+2) + "px");
+    $(id + " .sbtn-left").css("height", (height+2) + "px");
+    $(id + " .sbtn-right").css("height", (height+2) + "px");
+    $(id + " .sscroll-img-list div").css("height", (height) + "px");
+    $(id + " .sscroll-img-list div img").css("max-height", (height - 6) + "px");
+    $(id + " .sscroll-img-list div").css("width", (height) + "px");
+    $(id + " .sscroll-img-list div img").css("max-width", (height - 6) + "px");
     $(id + " .sbtn-right").click(move_right);
     $(id + " .sbtn-left").click(move_left);
     display(id);
@@ -89,17 +90,24 @@ function display(id) {
     for (i = active_idx[idx]; i <= $(id + " .sscroll-img-list div").length; i++) {
         ele = $(id + " img:eq(" + (i - 1) + ")");
         $(id + " .sscroll-img-list div:eq(" + (i - 1) + ")").addClass("sscroll-imgpad sscroll-imgpad-halfactive");
-        console.log((i - 1) + " " + ele.width() + " " + ele.height());
-        if (ele.width() > ele.height()) {
-            ele.css("margin-top", (height - ele.height()) / 2 + "px", "ele", width + "px");
+        console.log((i - 1) + " " + ele.width() + " " + ele.height() +" "+width+" "+height);
+        ew = ele.width();
+        eh = ele.height();
+        console.log(ew, eh, width, height);
+        if (ew > eh) {
+            ele.css("width", (height-6) + "px");
+            ele.css("height", "auto");
+            ele.css("margin-top", (height - eh*height/ew) / 2 + "px");
         }
         else {
-            ele.css("height", height+"px");
+            ele.css("height", (height-6)+"px", "width", "auto", "margin-top", 0);
+
         }
     }
-
-    $(id + ">div>div:eq(" + (focus[idx]) + ")").addClass("sscroll-imgpad-active");
-    $(id + ">div>div:eq(" + (focus[idx]) + ")").removeClass("sscroll-imgpad-halfactive");
+    if (focus[idx] > 0) {
+        $(id + ">div>div:eq(" + (focus[idx]) + ")").addClass("sscroll-imgpad-active");
+        $(id + ">div>div:eq(" + (focus[idx]) + ")").removeClass("sscroll-imgpad-halfactive");
+    }
 
 }
 
