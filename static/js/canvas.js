@@ -67,3 +67,9 @@ function draw_landmark(px, py, offset) {
     ctx.fillStyle = 'hsla(200,100%,40%,1)';
     ctx.fill();
 }
+
+function loading_canvas() {
+    c.height = c.height;
+    ctx.fillStyle = "#eaeaea";
+    ctx.fillRect(0,0,c.width, c.height);
+}

@@ -10,6 +10,7 @@ html, body {
     margin-left: 5%;
     margin-right: 5%;
     padding-bottom: 3.5rem; /*padding equals to height of footer*/
+    background-color: #f9f9f9;
 }
 
 .navbar {

@@ -19,11 +19,13 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/scrollimg.css">
-    <script src="../static/js/main.js"></script>
-    <script src="../static/js/canvas.js"></script>
-    <script src="../static/js/scrollimg.js"></script>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/scrollimg.css">
+    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="text/javascript" src="/static/js/canvas.js"></script>
+    <script type="text/javascript" src="/static/js/scrollimg.js"></script>
+    <!-- Load library of webcam driver -->
+    <script type="text/javascript" src="/static/js/webcam.min.js"></script>
 
 </head>
 <body onload="load()">
@@ -47,13 +49,16 @@
     <div class="main">
         <div class="description">
             <h2>Face Times</h2>
-            <p class="lead">Face Times = Face Detection * Landmark Recognition * Face Modigication.<br/>
+            <p class="lead">Face Times = Face Detection * Landmark * Recognition * Face Modification.<br/>
                 You can start by uploading an image or choosing in the gallery.
             </p>
         </div>
         <div class="row">
             <!-- Left column of image displaying -->
             <div class="col-sm-6" id="image">
+                <div id="loading_canvas" style="position:absolute;z-index: 0" class="none">
+                    <img src="/static/image/loading_dots_2.gif">
+                </div>
                 <canvas class="basic-margin" id="image_canvas" width="400" height="400"
                         style="border:1px solid #000000;">
                 </canvas>
@@ -64,29 +69,34 @@
                     <img class="none" src="/static/image/face1.jpg" id="default_img">
 
                     <div class="row basic-margin">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label class="btn btn-info btn-block" id="upload_btn" for="file">
                                 <span class="glyphicon glyphicon-cloud-upload icon-margin"></span>Upload
                             </label>
                         </div>
-                        <div class="col-sm-6">
-                            <button type="button" class="btn btn-warning btn-block disabled" id="random_btn">
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-warning btn-block" id="random_btn">
                                 <span class="glyphicon glyphicon-random icon-margin"></span>Random Face
+                            </button>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-success btn-block" id="capture_btn" data-toggle="modal" data-target="#myModal">
+                                <span class="glyphicon glyphicon-camera icon-margin"></span>Snapshot
                             </button>
                         </div>
                     </div>
                 </form>
                 <!-- Default Image Bar -->
-                <div class="sscroll-bar" style="padding:0px 15px">
+                <div class="sscroll-bar" style="">
                     <button type="button" class="btn btn-default sbtn-left">
                         <span class="glyphicon glyphicon-arrow-left"></span>
                     </button>
 
                     <div class="sscroll-img-list" id="default_img_list">
                         {% for default_img in default_img_list %}
-                            <div class="sscroll-imgpad" id="default_imgpad_{{ forloop.counter }}">
-                                <img class="sscroll-img" id="default_img_{{ forloop.counter }}"
-                                     src="{{ default_img.path }}" alt="Default"></div>
+                        <div class="sscroll-imgpad" id="default_imgpad_{{ forloop.counter }}">
+                            <img class="sscroll-img" id="default_img_{{ forloop.counter }}"
+                                 src="{{ default_img.path }}" alt="Default"></div>
                         {% endfor %}
 
                     </div>
@@ -112,7 +122,7 @@
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in">
                             <div class="panel-body" id="response_json">
-                                <p>Response in JSON</p>
+                                <pre>Response in JSON</pre>
                             </div>
                         </div>
                     </div>
@@ -145,10 +155,14 @@
                                 <div>
                                     <h4>Name</h4>
                                     <p id="pname">undefined</p>
-                                    <h4>Age:</h4>
-                                    <p id="age">undefined</p>
                                     <h4>Gender:</h4>
                                     <p id="gender">undefined</p>
+                                    <h4>Smile:</h4>
+                                    <p id="smile">undefined</p>
+                                    <h4>Glasses:</h4>
+                                    <p id="glasses">undefined</p>
+                                    <h4>Pose:</h4>
+                                    <p id="pose">undefined</p>
                                 </div>
                             </div>
                         </div>
@@ -182,15 +196,19 @@
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-5 col-md-4">
                                         {% for aug_btn in aug_btn_list %}
-                                            <button type="button"
-                                                    class="btn btn-primary btn-block aug_btn disabled">{{ aug_btn.name }}</button>
+                                        <button type="button"
+                                                class="btn btn-primary btn-block aug_btn disabled">{{ aug_btn.name }}
+                                        </button>
                                         {% endfor %}
                                     </div>
                                     <div class="col-xs-6 col-sm-7 col-md-8 left-border">
                                         <div class="aug_resultpad" id="aug_resultpad">
-                                            <img src="/static/image/no_img.png" alt="Augment_result" id="aug_result" class="aug_result">
+                                            <img src="/static/image/no_img.png" alt="Augment_result" id="aug_result"
+                                                 class="aug_result">
                                         </div>
-                                        <button type="button" class="btn btn-primary btn-block disabled" id="download_btn">Download</button>
+                                        <button type="button" class="btn btn-primary btn-block disabled"
+                                                id="download_btn">Download
+                                        </button>
                                         <form id="aug_form" action="/download/" method="post">
                                             {% csrf_token %}
                                             <input class="none" type="text" id="download_img64" name="src">
@@ -207,9 +225,29 @@
     </div>
 
     <div class="footer">
-        This website is mainly designed for CSE527 and CSE547 final projects.<br/>
-        © 2017 Face Website Group, Zhengwei wei, Chenghong Li, Sangtian Wang. All rights reserved.
+        This website is mainly designed for CSE527 final projects.<br/>
+        © 2017 Face Website Group, Zhengwei wei, Chenghong Li. All rights reserved.
     </div>
+    <img class="none" src="/static/image/loading_cubes_2.gif">
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Capture a picture (320*240)</h4>
+            </div>
+            <div class="modal-body">
+              <div id="my_camera"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="camera_down()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="take_snapshot()">Snapshot</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 </body>
 </html>

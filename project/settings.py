@@ -123,6 +123,7 @@ STATICFILES_DIRS = (
     ('css', os.path.join(STATIC_ROOT, 'css').replace('\\', '/')),
     ('js', os.path.join(STATIC_ROOT, 'js').replace('\\', '/')),
     ('image', os.path.join(STATIC_ROOT, 'image').replace('\\', '/')),
+    ('pictures', os.path.join(STATIC_ROOT, 'pictures').replace('\\', '/')),
     ('upload', os.path.join(STATIC_ROOT, 'upload').replace('\\', '/')),
 )
 print(BASE_DIR)

@@ -25,5 +25,7 @@ urlpatterns = [
     url(r'^landmark/', view.landmark),
     url(r'^augment/', view.augment),
     url(r'^download/', view.download),
+    url(r'^camera/', view.camera_demo),
+    url(r'^upload_snapshot/', view.upload_snapshot),
     url(r'^$', view.display_view),
 ] + staticfiles_urlpatterns()

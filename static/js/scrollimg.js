@@ -24,7 +24,6 @@ function setup() {
         }
         id_list.push('#' + obj[i].id);
     }
-    console.log($(".sscroll-bar"));
 }
 
 function init_bar(id) {
@@ -32,9 +31,9 @@ function init_bar(id) {
         $(id + " .sbtn-right").outerWidth(true));
     $(id + " .sscroll-img-list").css("width",
         ($(id).width() - $(id + " .sbtn-left").outerWidth(true) -
-            $(id + " .sbtn-right").outerWidth(true) - 7 ) + "px");
+            $(id + " .sbtn-right").outerWidth(true) - 10 ) + "px");
     var height = ($(id).width() - $(id + " .sbtn-left").outerWidth(true) -
-        $(id + " .sbtn-right").outerWidth(true) - 7 ) / active_count - 6;
+        $(id + " .sbtn-right").outerWidth(true) - 10 ) / active_count - 6;
     $(id).css("height", (height+4) + "px");
     $(id + " .sscroll-img-list").css("height", (height+2) + "px");
     $(id + " .sbtn-left").css("height", (height+2) + "px");
@@ -43,6 +42,9 @@ function init_bar(id) {
     $(id + " .sscroll-img-list div img").css("max-height", (height - 6) + "px");
     $(id + " .sscroll-img-list div").css("width", (height) + "px");
     $(id + " .sscroll-img-list div img").css("max-width", (height - 6) + "px");
+
+    $(id + " .sbtn-right").unbind('click');
+    $(id + " .sbtn-left").unbind('click');
     $(id + " .sbtn-right").click(move_right);
     $(id + " .sbtn-left").click(move_left);
     display(id);
@@ -104,7 +106,7 @@ function display(id) {
 
         }
     }
-    if (focus[idx] > 0) {
+    if (focus[idx] >= 0) {
         $(id + ">div>div:eq(" + (focus[idx]) + ")").addClass("sscroll-imgpad-active");
         $(id + ">div>div:eq(" + (focus[idx]) + ")").removeClass("sscroll-imgpad-halfactive");
     }
